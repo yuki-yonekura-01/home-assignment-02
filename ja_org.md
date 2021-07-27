@@ -1,21 +1,21 @@
 Japanese
 
-Title: ジョブにアップロードされたアーティファクト URL へのアクセス
+Title: ジョブ内で、アップロードされたアーティファクト URL にアクセスする
 
-[store_artifacts step](https://circleci.com/docs/2.0/configuration-reference/#store_artifacts) の後、アップロードされたアーティファクトは、ジョブが完了する前であっても、API を介して直ちにアクセスできるようになります。
+[store_artifacts](https://circleci.com/docs/ja/2.0/configuration-reference/#storeartifacts) ステップ実行後は、ジョブ完了前であっても、API を介してすぐにアップロードされたアーティファクトへアクセスできるようになります。
 
-このため、API コールを行い、変数に値を格納することで、格納されたアーティファクトの URL にアクセスできます。これで、アーティファクトは、その後のステップで使用できるようになります。たとえば、次の目的でアーティファクトを使用できます。
+このため、API を実行して取得した値を環境変数に設定することで、保存されているアーティファクトの URL にアクセスできます。以下のように、アーティファクト URL は、後続のステップで使用できます。
 
-- [Slack Orb](https://circleci.com/orbs/registry/orb/circleci/slack) を使用すると、アーティファクト URL をメッセージで送信できます。
-- これを [when 属性](https://circleci.com/docs/2.0/configuration-reference/#the-when-attribute) と組み合わせ、API コール `on_fail` のみを実行することができます。
+- [Slack Orb](https://circleci.com/orbs/registry/orb/circleci/slack) を使用して、アーティファクト URL を Slack メッセージで送信できます。
+- ステップが失敗（`on_fail`）した場合に限り API を実行するように、 [`when` 属性](https://circleci.com/docs/ja/2.0/configuration-reference/#the-when-attribute)と組み合わせることができます。
 
-最終的には、ビルドが失敗した場合にのみ、アップロードされたアーティファクトを含む Slack メッセージを送信し、ビルドの失敗に関するスクリーンショットや詳細な情報を含むファイルを送信できます。
+最終的には、ビルドが失敗した場合に限り、アップロードされたアーティファクト（スクリーンショットや失敗の詳細情報を含むファイルなど）を含む Slack メッセージを送信できます。
 
 ## ステップとプロセスの実行
 
-[プロジェクトレベルの環境変数](https://circleci.com/docs/2.0/env-vars/#setting-an-environment-variable-in-a-project)で(パーソナル API トークンを生成して格納)[https://circleci.com/docs/2.0/managing-api-tokens/#creating-a-personal-api-token]する必要があります。この例では、CIRCLE_API_TOKENとして格納する必要があります。
+[プロジェクトでの環境変数の設定](https://circleci.com/docs/ja/2.0/env-vars/#setting-an-environment-variable-in-a-project)で、[パーソナル API トークンを作成](https://circleci.com/docs/ja/2.0/managing-api-tokens/#creating-a-personal-api-token)し、環境変数に設定します。なお、以下のスニペット例は、環境変数名を `CIRCLE_API_TOKEN` としてパーソナル API トークンの値を設定していることを前提としています。
 
-次のスニペットでは、(`vcs`)を `github` または `bitbucket` に、 `(org)` を自分の組織に、そして `(project)` を自分のプロジェクトの名前に更新する必要があります。これは、すべてのアーティファクトを利用可能にするために、すべての `store_artifacts` ステップの後に追加する必要があります。
+以下のスニペットは、`(vcs)` をご自身のVCS（`github` または `bitbucket`）に、`(org)` を組織名に、そして `(project)` をプロジェクト名に、それぞれ変更してください。以下のスニペットは、すべてのアーティファクトを利用可能にするために、すべての `store_artifacts` ステップの後に追加してください。
 
 ```
 - run:
@@ -28,6 +28,4 @@ Title: ジョブにアップロードされたアーティファクト URL へ�
       echo "export ARTIFACT_RESPONSE=$artifacts" >> $BASH_ENV
 ```
 
-上記のステップを実行したら、`$ARTIFACT_RESPONSE` を使用して、ビルドのアーティファクト情報にアクセスできます。これは、スラック メッセージを送信するステップなど、別のステップに渡すことができます。
-
-
+上記ステップ実行後、環境変数 `$ARTIFACT_RESPONSE` を使って、ビルド アーティファクトの情報にアクセスできるようになります。`$ARTIFACT_RESPONSE` は、Slack メッセージの送信ステップなど、別のステップに渡すことができます。
