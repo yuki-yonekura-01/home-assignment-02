@@ -9,7 +9,6 @@ Title: ジョブ内で、アップロードされたアーティファクト URL
 - [Slack Orb](https://circleci.com/orbs/registry/orb/circleci/slack) を使用して、アーティファクト URL を Slack メッセージで送信できます。
 - ステップが失敗（`on_fail`）した場合に限り API を実行するように、 [`when` 属性](https://circleci.com/docs/ja/2.0/configuration-reference/#the-when-attribute)と組み合わせることができます。
 
-
 最終的には、ビルドが失敗した場合に限り、アップロードされたアーティファクト（スクリーンショットや失敗の詳細情報を含むファイルなど）を含む Slack メッセージを送信できます。
 
 ## ステップとプロセスの実行
